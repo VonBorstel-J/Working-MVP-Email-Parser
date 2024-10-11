@@ -39,8 +39,11 @@ transformers
 langchain
 spacy-transformers
 
-fuzzywuzzy
-python-Levenshtein
+thefuzz  # Added
+
+python-dateutil  # Added
+
+phonenumbers  # Added
 
 pytest
 pytest-mock
