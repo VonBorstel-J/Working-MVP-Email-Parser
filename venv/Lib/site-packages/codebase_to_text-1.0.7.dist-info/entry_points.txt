@@ -1,0 +1,2 @@
+[console_scripts]
+codebase-to-text = codebase_to_text.codebase_to_text:main

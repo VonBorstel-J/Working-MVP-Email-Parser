@@ -1,8 +1,6 @@
 import logging
 from src.parsers.parser_options import ParserOption
 from src.parsers.rule_based_parser import RuleBasedParser
-from src.parsers.local_llm_parser import LocalLLMParser
-from src.parsers.llm_parser import LLMParser
 from src.parsers.hybrid_parser import HybridParser
 
 class ParserRegistry:
@@ -42,6 +40,4 @@ class ParserRegistry:
 
 # Register parsers here
 ParserRegistry.register_parser(ParserOption.RULE_BASED, RuleBasedParser)
-ParserRegistry.register_parser(ParserOption.LOCAL_LLM, LocalLLMParser)
-ParserRegistry.register_parser(ParserOption.LLM, LLMParser)
 ParserRegistry.register_parser(ParserOption.HYBRID_PARSER, HybridParser)

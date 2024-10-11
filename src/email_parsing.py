@@ -4,6 +4,7 @@ from src.parsers.parser_registry import ParserRegistry
 from src.parsers.parser_options import ParserOption
 from src.utils.validation import validate_json
 
+
 class EmailParser:
     """
     EmailParser handles the selection and usage of different parsing strategies.

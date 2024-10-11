@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\jorda\OneDrive\Desktop\Code & Ai\email_parser_demo\venv
+set VIRTUAL_ENV=C:\Users\jorda\OneDrive\Desktop\Code & Ai\email_parser_demo\Working-MVP-Email-Parser\venv
 
 if not defined PROMPT set PROMPT=$P$G
 

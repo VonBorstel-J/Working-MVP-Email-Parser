@@ -92,7 +92,7 @@ class EncodingVisualizer:
         if default_to_notebook:
             try:
                 from IPython.core.display import HTML, display
-            except ImportError:
+            except ImportError as e:
                 raise Exception(
                     """We couldn't import IPython utils for html display.
                         Are you running in a notebook?
@@ -136,7 +136,7 @@ class EncodingVisualizer:
         if final_default_to_notebook:
             try:
                 from IPython.core.display import HTML, display
-            except ImportError:
+            except ImportError as e:
                 raise Exception(
                     """We couldn't import IPython utils for html display.
                     Are you running in a notebook?"""
@@ -170,7 +170,7 @@ class EncodingVisualizer:
         if h_step < 20:
             h_step = 20
         s = 32
-        l = 64  # noqa: E741
+        l = 64
         h = 10
         colors = {}
 

@@ -12,6 +12,4 @@ class ParserOption(Enum):
         LLM (str): Identifier for the OpenAI LLM parser.
     """
     RULE_BASED = 'rule_based'
-    LOCAL_LLM = 'local_llm'
-    LLM = 'llm'
     HYBRID_PARSER = 'hybrid_parser'

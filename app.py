@@ -1,11 +1,12 @@
+import os
 import logging
+import json_log_formatter
 from flask import Flask, render_template, request, jsonify
 from src.parsers.parser_options import ParserOption
 from src.parsers.parser_registry import ParserRegistry
 from src.email_parsing import EmailParser
 from dotenv import load_dotenv
-import os
-import json_log_formatter
+
 
 # Load environment variables from .env file
 load_dotenv()

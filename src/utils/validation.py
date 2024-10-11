@@ -1,121 +1,87 @@
 # src/utils/validation.py
 
 import jsonschema
+from jsonschema import Draft7Validator
 
-# Define the JSON schema based on the assignment schema
 assignment_schema = {
     "type": "object",
     "properties": {
         "Requesting Party": {
             "type": "object",
             "properties": {
-                "Insurance Company": {"type": "string"},
-                "Handler": {"type": "string"},
-                "Carrier Claim Number": {"type": "string"},
+                "Insurance Company": {"type": ["string", "null"]},
+                "Handler": {"type": ["string", "null"]},
+                "Carrier Claim Number": {"type": ["string", "null"]},
             },
-            "required": ["Insurance Company", "Handler", "Carrier Claim Number"],
         },
         "Insured Information": {
             "type": "object",
             "properties": {
-                "Name": {"type": "string"},
-                "Contact #": {"type": "string"},
-                "Loss Address": {"type": "string"},
-                "Public Adjuster": {"type": "string"},
-                "Owner or Tenant": {"type": "string"},
+                "Name": {"type": ["string", "null"]},
+                "Contact #": {"type": ["string", "null"]},
+                "Loss Address": {"type": ["string", "null"]},
+                "Public Adjuster": {"type": ["string", "null"]},
+                "Owner or Tenant": {"type": ["string", "null"]},
             },
-            "required": [
-                "Name",
-                "Contact #",
-                "Loss Address",
-                "Public Adjuster",
-                "Owner or Tenant",
-            ],
         },
         "Adjuster Information": {
             "type": "object",
             "properties": {
-                "Adjuster Name": {"type": "string"},
-                "Adjuster Phone Number": {"type": "string"},
-                "Adjuster Email": {"type": "string"},
-                "Job Title": {"type": "string"},
-                "Address": {"type": "string"},
-                "Policy #": {"type": "string"},
+                "Adjuster Name": {"type": ["string", "null"]},
+                "Adjuster Phone Number": {"type": ["string", "null"]},
+                "Adjuster Email": {"type": ["string", "null"]},
+                "Job Title": {"type": ["string", "null"]},
+                "Address": {"type": ["string", "null"]},
+                "Policy #": {"type": ["string", "null"]},
             },
-            "required": [
-                "Adjuster Name",
-                "Adjuster Phone Number",
-                "Adjuster Email",
-                "Job Title",
-                "Address",
-                "Policy #",
-            ],
         },
         "Assignment Information": {
             "type": "object",
             "properties": {
-                "Date of Loss/Occurrence": {"type": "string"},
-                "Cause of loss": {"type": "string"},
-                "Facts of Loss": {"type": "string"},
-                "Loss Description": {"type": "string"},
-                "Residence Occupied During Loss": {"type": "string"},
-                "Was Someone home at time of damage": {"type": "string"},
-                "Repair or Mitigation Progress": {"type": "string"},
-                "Type": {"type": "string"},
-                "Inspection type": {"type": "string"},
+                "Date of Loss/Occurrence": {"type": ["string", "null"]},
+                "Cause of loss": {"type": ["string", "null"]},
+                "Facts of Loss": {"type": ["string", "null"]},
+                "Loss Description": {"type": ["string", "null"]},
+                "Residence Occupied During Loss": {"type": ["string", "boolean", "null"]},
+                "Was Someone home at time of damage": {"type": ["string", "boolean", "null"]},
+                "Repair or Mitigation Progress": {"type": ["string", "null"]},
+                "Type": {"type": ["string", "null"]},
+                "Inspection type": {"type": ["string", "null"]},
             },
-            "required": [
-                "Date of Loss/Occurrence",
-                "Cause of loss",
-                "Facts of Loss",
-                "Loss Description",
-                "Residence Occupied During Loss",
-                "Was Someone home at time of damage",
-                "Repair or Mitigation Progress",
-                "Type",
-                "Inspection type",
-            ],
         },
         "Assignment Type": {
             "type": "object",
             "properties": {
-                "Wind": {"type": "boolean"},
-                "Structural": {"type": "boolean"},
-                "Hail": {"type": "boolean"},
-                "Foundation": {"type": "boolean"},
+                "Wind": {"type": ["boolean", "null"]},
+                "Structural": {"type": ["boolean", "null"]},
+                "Hail": {"type": ["boolean", "null"]},
+                "Foundation": {"type": ["boolean", "null"]},
                 "Other": {
                     "type": "object",
                     "properties": {
-                        "Checked": {"type": "boolean"},
-                        "Details": {"type": "string"},
+                        "Checked": {"type": ["boolean", "null"]},
+                        "Details": {"type": ["string", "null"]},
                     },
-                    "required": ["Checked", "Details"],
                 },
             },
-            "required": ["Wind", "Structural", "Hail", "Foundation", "Other"],
         },
-        "Additional details/Special Instructions": {"type": "string"},
-        "Attachment(s)": {"type": "array", "items": {"type": "string"}},
+        "Additional details/Special Instructions": {"type": ["string", "null"]},
+        "Attachment(s)": {
+            "type": "array",
+            "items": {"type": "string"},
+        },
         "Entities": {
             "type": "object",
             "additionalProperties": {"type": "array", "items": {"type": "string"}},
         },
     },
-    "required": [
-        "Requesting Party",
-        "Insured Information",
-        "Adjuster Information",
-        "Assignment Information",
-        "Assignment Type",
-        "Additional details/Special Instructions",
-        "Attachment(s)",
-        "Entities",
-    ],
 }
 
 def validate_json(parsed_data):
-    try:
-        jsonschema.validate(instance=parsed_data, schema=assignment_schema)
-        return True, ""
-    except jsonschema.exceptions.ValidationError as err:
-        return False, err.message
+    validator = Draft7Validator(assignment_schema)
+    errors = sorted(validator.iter_errors(parsed_data), key=lambda e: e.path)
+    
+    if errors:
+        error_messages = [f"{'.'.join(map(str, error.path))}: {error.message}" for error in errors]
+        return False, "\n".join(error_messages)
+    return True, ""
